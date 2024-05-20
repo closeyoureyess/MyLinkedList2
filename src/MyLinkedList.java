@@ -1,45 +1,52 @@
 public class MyLinkedList<E> {
     private int size;
     private E element;
-    private E element2;
-    private Node<E> first;
-    private Node<E> last;
-    private Node<E> x1;
-    private Node<E> x2;
+    private Node<E> head;
+    private Node<E> tail;
+    private Node<E> oldTail;
+    private Node<E> oldHeadForOnceNode;
+
 
     public void add(E element) {
-        if (last == null) {
-            size = 0;
+        if (this.element == null) {
+            Node<E> newNode = new Node<>(element);
+            head = newNode;
+            this.size = ++size;
             this.element = element;
-            Node<E> newNode = new Node<>(element, first, last);
-            first = newNode;
-            last = newNode;
+        } else if (this.size == 1) {
+            Node<E> newNode = new Node<>(element); //new Node<>(element, first, last), //new Node<>(element, first, last)
+            tail = newNode;
+            oldTail = tail;
+            head.setNext(tail);
+            tail.setPrev(head);
             this.size = ++size;
-            x1 = last;
-            System.out.println("Ветка if!");
-        } else {
-            this.element2 = element;
-            Node<E> newNode = new Node<>(element, first, last); //new Node<>(element, first, last), //new Node<>(element, first, last)
-            first = newNode;
-            first.next = first;
-            last.prev = last;
+        } else if (this.size > 1) {
+            Node<E> newNode = new Node<>(element);
+            tail = newNode;
+            tail.setPrev(oldTail);
+            oldTail.setNext(tail);
+            oldTail = tail;
             this.size = ++size;
-            x2 = first;
-            System.out.println("Ветка else!");
         }
     }
 
-    public Node getElement(int indexNumber) {
+    public Node<E> getElement(int indexNumber) {
         System.out.println(size);
-        if (indexNumber < size & indexNumber == 0) {
-            System.out.println("Возвращен элемент " + x1);
-            return x1;
+        Node<E> forUse = head;
+        if (indexNumber < size) {
+            if (indexNumber == 0) {
+                System.out.println(head.getElementNode());
+            } else {
+                for (int i = 1; i <= indexNumber; i++) {
+                    forUse = forUse.getNext();
+                }
+                System.out.println(forUse);
+                return forUse;
+            }
+        } else {
+            System.out.println("Индекс больше длины списка");
+            return null;
         }
-        if (indexNumber < size & indexNumber == 1) {
-            System.out.println("Возвращен элемент " + x2);
-            return x2;
-        }
-        System.out.println("Индекс больше длины списка");
         return null;
     }
 
@@ -48,11 +55,9 @@ public class MyLinkedList<E> {
         private Node<E> next;
         private Node<E> prev;
 
-        private Node(E elementNode, Node<E> next, Node<E> prev) {
-            this.elementNode = elementNode;
-            this.prev = prev;
-            this.next = next;
 
+        public Node(E elementNode) {
+            this.elementNode = elementNode;
         }
 
         @Override
@@ -62,6 +67,50 @@ public class MyLinkedList<E> {
                     '}';
         }
 
-    }
+        public E getElementNode() {
+            return elementNode;
+        }
 
+        public void setElementNode(E elementNode) {
+            this.elementNode = elementNode;
+        }
+
+        public Node<E> getNext() {
+            return next;
+        }
+
+        public Node<E> getPrev() {
+            return prev;
+        }
+
+        public void setNext(Node<E> next) {
+            this.next = next;
+        }
+
+        public void setPrev(Node<E> prev) {
+            this.prev = prev;
+        }
+    }
 }
+
+//Get от хвоста до головы, а не от головы до хвоста
+
+/*public Node<E> getElement(int indexNumber) {
+        Node<E> forUse = tail;
+        if (indexNumber < size) {
+            System.out.println("Первый if");
+            if (indexNumber == size - 1) {
+                System.out.println(tail.getElementNode());
+            } else {
+                for (int i = size - 1; i > indexNumber; i--) {
+                    forUse = forUse.getPrev();
+                }
+                System.out.println(forUse);
+                return forUse;
+            }
+        } else {
+            System.out.println("Индекс больше длины списка");
+            return null;
+        }
+        return null;
+    }*/

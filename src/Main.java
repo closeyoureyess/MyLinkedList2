@@ -6,15 +6,18 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
-
         MyLinkedList<String> myLinkedList = new MyLinkedList<>();
 
-        myLinkedList.add(scanner.nextLine());
-        myLinkedList.add(scanner.nextLine());
-        myLinkedList.getElement(scanner.nextInt());
-        myLinkedList.getElement(scanner.nextInt());
-        scanner.close();
+        Scanner scanner = new Scanner(System.in);
 
+        for (int i = 1; i <= 10; i++) {
+            myLinkedList.add(scanner.nextLine());
+        }
+        System.out.println("Выход из 1 цикла");
+        for (int i = 0; i <= 9; i++) {
+            myLinkedList.getElement(scanner.nextInt());
+        }
+        scanner.close();
     }
 }
+
